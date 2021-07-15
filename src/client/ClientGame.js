@@ -5,6 +5,13 @@ import sprites from '../configs/sprites';
 import levelCfg from '../configs/world.json';
 import gameObjects from '../configs/gameObjects.json';
 
+const directions = {
+  Left: [-1, 0],
+  Right: [1, 0],
+  Up: [0, -1],
+  Down: [0, 1],
+};
+
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
@@ -63,21 +70,12 @@ class ClientGame {
         if (keydown) {
           this.moveDirection('Down');
         }
-      }
-    })
+      },
+    });
   }
 
-  directions = {
-    Left: [-1, 0],
-    Right: [1, 0],
-    Up: [0, -1],
-    Down: [0, 1],
-  };
-
   moveDirection(direction) {
-    this.player.moveByCellCoord(...this.directions[direction], (cell) => {
-      return cell.findObjectsByType('grass').length;
-    });
+    this.player.moveByCellCoord(...directions[direction], (cell) => cell.findObjectsByType('grass').length);
   }
 
   static init(cfg) {

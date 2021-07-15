@@ -1,6 +1,6 @@
 import EventSourceMixin from '../common/EventSourceMixin';
-import ClientCamera from "./ClientCamera";
-import ClientInput from "./ClientInput";
+import ClientCamera from './ClientCamera';
+import ClientInput from './ClientInput';
 
 class ClientEngine {
   constructor(canvas) {

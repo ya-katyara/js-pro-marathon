@@ -1,5 +1,5 @@
-import PositionedObject from "../common/PositionedObject";
-import ClientCell from "./ClientCell";
+import PositionedObject from '../common/PositionedObject';
+import ClientCell from './ClientCell';
 
 class ClientWorld extends PositionedObject {
   constructor(game, engine, levelCfg) {
@@ -19,7 +19,7 @@ class ClientWorld extends PositionedObject {
       worldWidth,
       cellWidth: cellSize,
       cellHeight: cellSize,
-      map: []
+      map: [],
     });
   }
 
@@ -43,7 +43,7 @@ class ClientWorld extends PositionedObject {
   }
 
   render(time) {
-    const {map, worldWidth, worldHeight} = this;
+    const { map, worldWidth, worldHeight } = this;
 
     for (let row = 0; row < worldWidth; row++) {
       for (let col = 0; col < worldHeight; col++) {
