@@ -17,6 +17,5 @@ module.exports = {
     "no-param-reassign": [0],
     "implicit-arrow-linebreak": [0],
     "function-paren-newline": [0],
-
   },
 };
