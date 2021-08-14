@@ -110,7 +110,11 @@
             [["grass"]],
             [["grass"]],
             [["grass"]],
-            [["grass", {"type": "girl3", "player":  true}]],
+            [["grass"], [], [
+                {
+                    "type": "girl3",
+                    "player": true
+                }]],
             [["grass"]],
             [["grass"]],
             [["grass"]],
