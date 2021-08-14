@@ -1,9 +1,20 @@
 import './index.scss';
 import ClientGame from './client/ClientGame';
 
-window.addEventListener('load', () => {
-  ClientGame.init({ tagId: 'game' });
+const nameForm = document.getElementById('nameForm');
+nameForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const nameInput = document.getElementById('name');
+  const startScreen = document.querySelector('.start-game');
+  startScreen.remove();
+
+  ClientGame.init({ tagId: 'game', playerName: nameInput.value });
 });
+
+// window.addEventListener('load', () => {
+//   ClientGame.init({ tagId: 'game' });
+// });
 
 // import CharWalk from './assets/Female-5-Walk.png';
 // import terrainAtlas from './assets/terrain.png';
