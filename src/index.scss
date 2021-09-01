@@ -14,10 +14,6 @@ body {
 
 body {
   min-height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-image: url(./assets/Mountains1.png);
 }
 
 .wrap {
@@ -26,6 +22,10 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(./assets/Mountains1.png);
 }
 
 .logo {
@@ -238,12 +238,11 @@ body {
 
 .send form button {
   background: #0633ff;
-  color: #FFF;
+  color: #fff;
   border: 1px solid #838383;
   border-radius: 0 4px 4px 0;
   padding: 0 8px;
 }
-
 
 .message {
   position: absolute;
@@ -263,7 +262,7 @@ body {
     position: absolute;
     top: 8px;
     right: 8px;
-    content: "";
+    content: '';
     width: 8px;
     height: 8px;
     border-radius: 100%;

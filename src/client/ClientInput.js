@@ -1,5 +1,6 @@
 /* eslint-disable */
 import EventSourceMixin from '../common/EventSourceMixin';
+import {getScrollbarWidth} from "../common/util";
 
 class ClientInput {
   constructor(canvas) {
@@ -17,12 +18,18 @@ class ClientInput {
     this.keysPressed.add(e.code);
     this.keyHandlers[e.code] && this.keyHandlers[e.code](true);
     this.trigger('keydown', e);
+
+    const scrollWidth = getScrollbarWidth();
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollWidth + 'px';
   }
 
   onKeyUp(e) {
     this.keysPressed.delete(e.code);
     this.keyHandlers[e.code] && this.keyHandlers[e.code](false);
     this.trigger('keyup', e);
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = 0;
   }
 
   onKey({ ...handlers }) {

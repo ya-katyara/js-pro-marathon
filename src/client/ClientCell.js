@@ -28,24 +28,32 @@ class ClientCell extends PositionedObject {
     this.initGameObjects();
   }
 
-  initGameObjects() {
-    const { cellCfg, objectClasses } = this;
+  createGameObject(objCfg, layerId) {
+      const { objectClasses } = this;
+      let ObjectClass;
 
-    this.objects = cellCfg.map((layer, layerId) =>
-      layer.map((objCfg) => {
-        let ObjectClass;
-
-        if (objCfg.class) {
+      if (objCfg.class) {
           ObjectClass = objectClasses[objCfg.class];
-        } else {
+      } else {
           ObjectClass = ClientGameObject;
-        }
-        return new ObjectClass({
+      }
+      const obj = new ObjectClass({
           cell: this,
           objCfg,
           layerId,
-        });
-      }),
+      });
+
+      if (obj.type == 'spawn') {
+          this.world.game.addSpawnPoint(obj);
+      }
+      return obj;
+  }
+
+  initGameObjects() {
+    const { cellCfg } = this;
+
+    this.objects = cellCfg.map((layer, layerId) =>
+      layer.map((objCfg) => this.createGameObject(objCfg, layerId)),
     );
   }
 

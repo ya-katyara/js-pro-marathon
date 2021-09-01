@@ -1,77 +1,42 @@
-import { io } from 'socket.io-client';
 import './index.scss';
 import ClientGame from './client/ClientGame';
-import { getTime } from './common/util';
 
-const nameForm = document.getElementById('nameForm');
-const chatForm = document.getElementById('form');
-const chatWindow = document.querySelector('.message');
-const socket = io('https://jsprochat.herokuapp.com');
-let users = {};
+window.addEventListener('load', async () => {
+    const world = await fetch('https://jsmarathonpro.herokuapp.com/api/v1/world').then(res => res.json());
+    const sprites = await fetch('https://jsmarathonpro.herokuapp.com/api/v1/sprites').then(res => res.json());
+    const gameObjects = await fetch('https://jsmarathonpro.herokuapp.com/api/v1/gameObjects').then(res => res.json());
 
-function onSubmitName(evt) {
-  evt.preventDefault();
+    const startGame = document.querySelector('.start-game');
+    const nameForm = document.getElementById('nameForm');
 
-  const chatWrap = document.querySelector('.chat-wrap');
-  const nameInput = document.getElementById('name');
-  const name = nameInput.value;
-  if (name) {
-    const startScreen = document.querySelector('.start-game');
-    startScreen.remove();
-    nameForm.removeEventListener('submit', onSubmitName);
+    startGame.style.display = 'flex';
+    function onSubmitName(evt) {
+        evt.preventDefault();
 
-    ClientGame.init({ tagId: 'game', playerName: name });
+        const chatWrap = document.querySelector('.chat-wrap');
+        const nameInput = document.getElementById('name');
+        const name = nameInput.value;
+        if (name) {
+            const startScreen = document.querySelector('.start-game');
+            startScreen.remove();
+            nameForm.removeEventListener('submit', onSubmitName);
 
-    chatWrap.style.display = 'block';
-    socket.emit('start', name);
-  }
-}
-nameForm.addEventListener('submit', onSubmitName);
+            ClientGame.init({
+                tagId: 'game',
+                playerName: name,
+                world,
+                sprites,
+                gameObjects,
+                apiCfg: {
+                    chatElement: chatWrap,
+                    url: 'https://jsmarathonpro.herokuapp.com/',
+                    path: '/game'
+                }
+            });
 
-chatForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const inputMessage = document.getElementById('input');
-  if (inputMessage.value) {
-    socket.emit('chat message', inputMessage.value);
-    inputMessage.value = '';
-  }
-});
+            chatWrap.style.display = 'block';
+        }
+    }
 
-const randomColor = () => Math.floor(Math.random() * 16777215).toString(16);
-
-function formatChatItem(data) {
-  const { time, msg } = data;
-  const color = users[data.id].color;
-  return `<p style="color: #${color};"><strong>${getTime(time)}${data.name ? ` ${data.name}:` : ''}</strong> ${msg}</p>`;
-}
-
-socket.on('chat connection', (data) => {
-  users = {
-    ...users,
-    [data.id]: {
-      ...data,
-      color: randomColor(),
-    },
-  };
-  chatWindow.insertAdjacentHTML('beforeend', formatChatItem(data));
-});
-
-socket.on('chat disconnect', (data) => {
-  chatWindow.insertAdjacentHTML('beforeend', formatChatItem(data));
-});
-
-socket.on('chat message', (data) => {
-  chatWindow.insertAdjacentHTML('beforeend', formatChatItem(data));
-});
-
-socket.on('chat online', (data) => {
-  data.names.forEach((name) => {
-    users = {
-      ...users,
-      [name.id]: {
-        color: randomColor(),
-      },
-    };
-  });
-  chatWindow.setAttribute('title', `Now online: ${data.online}`);
-});
+    nameForm.addEventListener('submit', onSubmitName);
+})
